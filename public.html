@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ConvertSync CRM — Lead Capture</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a73e8;     /* Clean blue */
+    --primary-dark: #0d47a1;
+    --bg: #f4f6f9;          /* Soft grey background */
+    --card: #ffffff;
+    --border: #dce3eb;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --radius: 12px;
+    --shadow: 0 3px 12px rgba(0,0,0,0.08);
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    font-family: "Inter", sans-serif;
+  }
+
+  /* Top Navigation */
+  .navbar {
+    background: white;
+    padding: 14px 24px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .navbar img {
+    height: 48px;
+  }
+  .navbar-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  /* Main Form Area */
+  .wrap {
+    max-width: 520px;
+    margin: 40px auto;
+    background: var(--card);
+    padding: 26px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 22px;
+    margin-top: 0;
+    color: var(--primary-dark);
+    font-weight: 800;
+  }
+
+  .subtext {
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-weight: 600;
+    margin: 14px 0 6px;
+    display: block;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  .input-group {
+    position: relative;
+  }
+
+  .input-group i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary);
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 12px 12px 12px 38px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    font-size: 15px;
+  }
+
+  textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: var(--primary-dark);
+  }
+
+  .msg {
+    padding: 12px;
+    margin-top: 14px;
+    border-radius: 8px;
+    display: none;
+    font-size: 14px;
+  }
+  .ok {
+    background: #e8fff0;
+    color: #0a6b35;
+  }
+  .err {
+    background: #ffecec;
+    color: #a11b1b;
+  }
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<div class="navbar">
+  <img src="https://i.postimg.cc/yYHVnS8s/Gemini-Generated-Image-24txjv24txjv24tx.png" />
+  <div class="navbar-title">ConvertSync CRM</div>
+</div>
+
+<!-- FORM CARD -->
+<div class="wrap">
+  <h2><i class="fa-solid fa-user-plus" style="color:var(--primary)"></i> New Lead</h2>
+  <div class="subtext">
+    Add a new lead into the ConvertSync pipeline.
+  </div>
+
+  <form id="leadForm" onsubmit="return false;">
+
+    <label>Full Name *</label>
+    <div class="input-group">
+      <i class="fa-solid fa-user"></i>
+      <input id="name" required minlength="2" placeholder="e.g., John Doe" />
+    </div>
+
+    <label>Email</label>
+    <div class="input-group">
+      <i class="fa-solid fa-envelope"></i>
+      <input id="email" type="email" placeholder="example@mail.com" />
+    </div>
+
+    <label>Phone</label>
+    <div class="input-group">
+      <i class="fa-solid fa-phone"></i>
+      <input id="phone" placeholder="+353" />
+    </div>
+
+    <label>Product / Interest</label>
+    <div class="input-group">
+      <i class="fa-solid fa-bullhorn"></i>
+      <input id="interest" placeholder="Digital marketing, Ads campaign..." />
+    </div>
+
+    <label>Estimated Value (€)</label>
+    <div class="input-group">
+      <i class="fa-solid fa-euro-sign"></i>
+      <input id="value" type="number" min="0" step="0.01" placeholder="200.00" />
+    </div>
+
+    <label>Lead Type</label>
+    <div class="input-group">
+      <i class="fa-solid fa-fire"></i>
+      <select id="leadType">
+        <option>Hot Lead</option>
+        <option>Warm Lead</option>
+        <option>Cold Lead</option>
+        <option>Not Interested</option>
+      </select>
+    </div>
+
+    <label>Source</label>
+    <div class="input-group">
+      <i class="fa-solid fa-hashtag"></i>
+      <select id="source">
+        <option>Website</option>
+        <option>Referral</option>
+        <option>Cold Call</option>
+        <option>Social Media</option>
+      </select>
+    </div>
+
+    <label>Notes</label>
+    <div class="input-group">
+      <i class="fa-solid fa-note-sticky"></i>
+      <textarea id="notes" placeholder="Optional notes..."></textarea>
+    </div>
+
+    <button id="submitBtn">Submit Lead</button>
+
+    <div id="feedback" class="msg"></div>
+  </form>
+</div>
+
+<!-- FIREBASE SCRIPT -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+ 
+const firebaseConfig = {
+  apiKey: "AIzaSyCEhsDOdHVHFH__eTiaix8_NHThiV3kvaY",
+  authDomain: "convertsync.firebaseapp.com",
+  projectId: "convertsync",
+  storageBucket: "convertsync.firebasestorage.app",
+  messagingSenderId: "1085152436346",
+  appId: "1:1085152436346:web:b4ca7bae5b0032560e5bc3"
+};
+ 
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const leadsCol = collection(db, "convertsync_leads");
+
+  const feedback = document.getElementById("feedback");
+
+  const show = (msg, ok = true) => {
+    feedback.style.display = "block";
+    feedback.textContent = msg;
+    feedback.className = "msg " + (ok ? "ok" : "err");
+    setTimeout(() => (feedback.style.display = "none"), 3500);
+  };
+
+  document.getElementById("submitBtn").addEventListener("click", async () => {
+    const name = document.getElementById("name").value.trim();
+    if (!name) return show("Name is required.", false);
+
+    try {
+      await addDoc(leadsCol, {
+        name,
+        email: document.getElementById("email").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        interest: document.getElementById("interest").value.trim(),
+        estimatedValue: parseFloat(document.getElementById("value").value) || 0,
+        leadType: document.getElementById("leadType").value,
+        source: document.getElementById("source").value,
+        notes: document.getElementById("notes").value.trim(),
+        stage: "New",
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+
+      show("Lead submitted successfully!");
+      document.getElementById("leadForm").reset();
+    } catch (e) {
+      console.error(e);
+      show("Error submitting lead. Check Firebase config.", false);
+    }
+  });
+</script>
+
+</body>
+</html>

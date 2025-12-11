@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ConvertSync CRM — Staff Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a73e8;
+    --primary-dark: #0d47a1;
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #dce3eb;
+    --radius: 12px;
+    --shadow: 0 3px 12px rgba(0,0,0,0.08);
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    font-family: "Inter", sans-serif;
+  }
+
+  /* NAVBAR */
+  .navbar {
+    background: white;
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  }
+  .navbar img {
+    height: 48px;
+  }
+  .navbar-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  /* MAIN WRAP */
+  .container {
+    max-width: 1200px;
+    margin: 32px auto;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 28px;
+    padding: 0 16px;
+  }
+
+  .card {
+    background: white;
+    padding: 22px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .card h3 {
+    margin: 0 0 10px;
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--primary-dark);
+  }
+
+  label {
+    font-weight: 600;
+    margin-top: 12px;
+    font-size: 14px;
+    display: block;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 14px;
+    background: var(--primary);
+    color: white;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: var(--primary-dark);
+  }
+
+  /* LOGIN CARD */
+  .login-info {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+  }
+
+  th {
+    background: #eef2f7;
+    text-align: left;
+    padding: 10px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  td {
+    padding: 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  tr:hover {
+    background: #f6f8fc;
+    cursor: pointer;
+  }
+
+  .stage-pill {
+    padding: 6px 10px;
+    border-radius: 14px;
+    font-size: 13px;
+    background: #eaf1fe;
+    color: var(--primary-dark);
+    font-weight: 600;
+  }
+
+  /* DETAIL PANEL */
+  textarea {
+    min-height: 90px;
+  }
+
+  .danger {
+    background: #d9534f;
+  }
+  .danger:hover {
+    background: #b52b27;
+  }
+
+  @media(max-width: 950px) {
+    .container {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <img src="https://i.postimg.cc/yYHVnS8s/Gemini-Generated-Image-24txjv24txjv24tx.png">
+  <div class="navbar-title">ConvertSync CRM — Staff Dashboard</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- LEFT PANEL -->
+  <div>
+
+    <!-- LOGIN CARD -->
+    <div id="loginCard" class="card">
+      <h3><i class="fa-solid fa-lock"></i> Staff Login</h3>
+
+      <label>Username</label>
+      <input id="username" placeholder="marker@demo" />
+
+      <label>Password</label>
+      <input id="password" type="password" placeholder="Marker123!" />
+
+      <button id="loginBtn">Login</button>
+
+      <div class="login-info">
+        <strong>Username:</strong> marker@demo<br>
+        <strong>Password:</strong> Marker123!
+      </div>
+    </div>
+
+    <!-- LEADS LIST -->
+    <div id="listCard" class="card" style="display:none;">
+      <h3><i class="fa-solid fa-database"></i> Leads</h3>
+
+      <label>Filter by Stage</label>
+      <select id="filterStage">
+        <option value="All">All</option>
+        <option>New</option>
+        <option>Contacted</option>
+        <option>Qualified</option>
+        <option>Proposal</option>
+        <option>Won</option>
+        <option>Lost</option>
+      </select>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width:160px;">Date</th>
+            <th>Name</th>
+            <th>Stage</th>
+            <th style="width:120px;">Value (€)</th>
+          </tr>
+        </thead>
+        <tbody id="leadsBody"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="card">
+    <h3><i class="fa-solid fa-user-pen"></i> Lead Details</h3>
+    <p id="emptyDetail" style="color:var(--muted);font-size:14px;">Select a lead to view details.</p>
+
+    <div id="detailPanel" style="display:none;">
+      <label>Status</label>
+      <select id="dstage">
+        <option>New</option>
+        <option>Contacted</option>
+        <option>Qualified</option>
+        <option>Proposal</option>
+        <option>Won</option>
+        <option>Lost</option>
+      </select>
+
+      <label>Estimated Value (€)</label>
+      <input id="dvalue" type="number" />
+
+      <label>Internal Notes</label>
+      <textarea id="dnotes"></textarea>
+
+      <button id="saveBtn">Save Changes</button>
+      <button id="deleteBtn" class="danger">Delete Lead</button>
+
+      <p id="detailMsg" style="color:green;font-size:14px;margin-top:6px;"></p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FIREBASE SCRIPT -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import {
+    getFirestore, collection, query, orderBy, onSnapshot,
+    doc, getDoc, updateDoc, deleteDoc, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+  apiKey: "AIzaSyCEhsDOdHVHFH__eTiaix8_NHThiV3kvaY",
+  authDomain: "convertsync.firebaseapp.com",
+  projectId: "convertsync",
+  storageBucket: "convertsync.firebasestorage.app",
+  messagingSenderId: "1085152436346",
+  appId: "1:1085152436346:web:b4ca7bae5b0032560e5bc3"
+};
+
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const leadsCol = collection(db, "convertsync_leads");
+
+  const loginCard = document.getElementById("loginCard");
+  const listCard = document.getElementById("listCard");
+  const loginBtn = document.getElementById("loginBtn");
+
+  const STAFF_USER = "marker@demo";
+  const STAFF_PASS = "Marker123!";
+
+  loginBtn.onclick = () => {
+    const u = document.getElementById("username").value.trim();
+    const p = document.getElementById("password").value;
+
+    if (u === STAFF_USER && p === STAFF_PASS) {
+      loginCard.style.display = "none";
+      listCard.style.display = "block";
+      startRealtime();
+    } else {
+      alert("Invalid login.");
+    }
+  };
+
+  const leadsBody = document.getElementById("leadsBody");
+  const filterStage = document.getElementById("filterStage");
+  let selectedLeadId = null;
+
+  function startRealtime() {
+    const q = query(leadsCol, orderBy("createdAt", "desc"));
+    onSnapshot(q, snapshot => {
+      leadsBody.innerHTML = "";
+      snapshot.forEach(docSnap => {
+        const d = docSnap.data();
+        const tr = document.createElement("tr");
+
+        const date = d.createdAt?.toDate().toLocaleString() || "-";
+
+        tr.innerHTML = `
+          <td>${date}</td>
+          <td>${d.name || "-"}</td>
+          <td><span class="stage-pill">${d.stage}</span></td>
+          <td>€ ${Number(d.estimatedValue || 0).toFixed(2)}</td>
+        `;
+
+        tr.addEventListener("click", () => openDetail(docSnap.id));
+        leadsBody.appendChild(tr);
+      });
+    });
+  }
+
+  const detailPanel = document.getElementById("detailPanel");
+  const emptyDetail = document.getElementById("emptyDetail");
+
+  async function openDetail(id) {
+    selectedLeadId = id;
+    const ref = doc(db, "convertsync_leads", id);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) return;
+
+    const d = snap.data();
+
+    emptyDetail.style.display = "none";
+    detailPanel.style.display = "block";
+
+    document.getElementById("dstage").value = d.stage || "New";
+    document.getElementById("dvalue").value = d.estimatedValue || 0;
+    document.getElementById("dnotes").value = d.internalNotes || d.notes || "";
+  }
+
+  document.getElementById("saveBtn").onclick = async () => {
+    if (!selectedLeadId) return;
+
+    await updateDoc(doc(db, "convertsync_leads", selectedLeadId), {
+      stage: document.getElementById("dstage").value,
+      estimatedValue: parseFloat(document.getElementById("dvalue").value) || 0,
+      internalNotes: document.getElementById("dnotes").value.trim(),
+      updatedAt: serverTimestamp()
+    });
+
+    document.getElementById("detailMsg").textContent = "Saved!";
+    setTimeout(() => document.getElementById("detailMsg").textContent = "", 2000);
+  };
+
+  document.getElementById("deleteBtn").onclick = async () => {
+    if (!selectedLeadId) return;
+    if (!confirm("Delete this lead?")) return;
+
+    await deleteDoc(doc(db, "convertsync_leads", selectedLeadId));
+    detailPanel.style.display = "none";
+    emptyDetail.style.display = "block";
+  };
+</script>
+
+</body>
+</html>
